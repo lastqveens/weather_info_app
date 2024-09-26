@@ -1,3 +1,4 @@
+import 'dart:math';  // For generating random values
 import 'package:flutter/material.dart';
 
 void main() => runApp(WeatherApp());
@@ -23,12 +24,20 @@ class _WeatherScreenState extends State<WeatherScreen> {
 
   final TextEditingController cityController = TextEditingController();
 
+  // Function to simulate fetching weather data
   void fetchWeather() {
     setState(() {
-      // Simulate fetching weather data
+      // Get the entered city name
       cityName = cityController.text;
-      weatherCondition = 'Sunny'; // Placeholder for actual data
-      temperature = '25°C';       // Placeholder for actual data
+
+      // Generate a random temperature between 15°C and 30°C
+      Random random = Random();
+      int randomTemp = 15 + random.nextInt(16); // Generates a random int between 15 and 30
+      temperature = '$randomTemp°C';
+
+      // Randomly select a weather condition from sunny, cloudy, and rainy
+      List<String> weatherConditions = ['Sunny', 'Cloudy', 'Rainy'];
+      weatherCondition = weatherConditions[random.nextInt(weatherConditions.length)];
     });
   }
 
@@ -43,6 +52,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+            // Input field for city name
             TextField(
               controller: cityController,
               decoration: InputDecoration(
@@ -51,12 +61,13 @@ class _WeatherScreenState extends State<WeatherScreen> {
               ),
             ),
             SizedBox(height: 16),
+            // Button to fetch weather data
             ElevatedButton(
               onPressed: fetchWeather,
               child: Text('Fetch Weather'),
             ),
             SizedBox(height: 32),
-            // Weather data display
+            // Displaying the fetched weather data
             Text(
               'City: $cityName',
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
